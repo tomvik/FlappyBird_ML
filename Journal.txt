@@ -1,0 +1,20 @@
+The goal of the project is to have a functional (low budget) flappy bird game and then train some birds with ML:
+Neural network and best survivors will pass on their "genes"
+Neural Network:
+    Inputs:
+        1. Vertical distance from midpoint of next window
+        2. Horizontal distance from midpoint of next window
+    Outputs:
+        1. Flap or not to Flap
+    3 layer NN, hidden layer of n Nodes
+Best survivor:
+    Distance traveled from the beginning
+
+TODO:
+-Import useful libraries from previous project
+-Design the stage
+-Make the stage move
+-Make bird
+-Make bird fall
+-Make bird flap
+-Stop round when bird is dead

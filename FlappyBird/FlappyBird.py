@@ -1,5 +1,5 @@
 import pygame
-from SimpleFigures import Rectangle, Size
+from pkg import Rectangle, Size
 
 
 def wait_for_enter():

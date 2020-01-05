@@ -2,7 +2,7 @@ import pygame
 import random
 import math
 from typing import List, Tuple
-from .Common_Types import *
+from ..Common.Common_Types import *
 
 
 class Rectangle:

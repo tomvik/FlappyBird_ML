@@ -1,2 +1,2 @@
-from .Common.Common_Types import Size
-from .SimpleFigures import Rectangle
+from .Common.Common_Types import Size, Color, Font
+from .Stage import Stage

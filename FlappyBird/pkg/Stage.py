@@ -1,12 +1,12 @@
 import pygame
 from typing import Dict, List, Tuple
 
-from Rectangle import Rectangle
-from Clock import Clock
-import TextBox
-import Distances
-import Constants
-from Common_Types import *
+from .Common.Common_Types import *
+from .Common import Constants
+from .Math import Distances
+from .SimpleFigures.Rectangle import Rectangle
+from .SimpleFigures.Clock import Clock
+from .SimpleFigures import TextBox
 
 
 class Stage:

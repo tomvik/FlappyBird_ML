@@ -16,10 +16,24 @@ def wait_for_enter():
 
 pygame.init()
 
-stage = Stage(Constants.WINDOW_SIZE, Constants.WINDOW_TITLE, Constants.STAGE_SIZE, Constants.STAGE_COLORS, Constants.MARGIN_COLORS,
-                      Constants.CLOCK_FONT, Constants.CLOCK_COLOR, Constants.TEXT_FONT)
-pygame.display.update()
+stage = Stage(Constants.WINDOW_SIZE,
+              Constants.WINDOW_TITLE,
+              Constants.STAGE_SIZE,
+              Constants.STAGE_COLORS,
+              Constants.MARGIN_COLORS,
+              Constants.PILAR_SIZE,
+              Constants.PILAR_SPEED,
+              Constants.PILAR_MIN_DISTANCE,
+              Constants.PILAR_MAX_DISTANCE,
+              Constants.CLOCK_FONT,
+              Constants.CLOCK_COLOR,
+              Constants.TEXT_FONT)
 
+pygame.display.update()
 wait_for_enter()
+while stage.update_clock():
+    pygame.display.update()
+    pass
+#wait_for_enter()
 
 pygame.display.update()

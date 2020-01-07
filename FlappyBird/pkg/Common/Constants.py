@@ -28,6 +28,10 @@ BIRDS_COLOR: List[Color] = [Color(204, 0, 0), Color(204, 102, 0),
 
 # Stage constants
 STAGE_SIZE: Size = Size(800, 500)
+PILAR_SIZE: Size = Size(20, 30)
+PILAR_MAX_DISTANCE: int = 200
+PILAR_MIN_DISTANCE: int = 100
+PILAR_SPEED: int = 1
 WALLS_DIMENSIONS: Size = Size(((WINDOW_WIDTH-STAGE_SIZE.width)/2),
                               ((WINDOW_HEIGHT-STAGE_SIZE.height)/2))
 STAGE_COLORS: Tuple[Color, Color] = (STAGE_BACKGROUND, STAGE_PILARS)

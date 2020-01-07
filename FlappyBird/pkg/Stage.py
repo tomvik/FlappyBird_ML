@@ -16,6 +16,10 @@ class Stage:
                  stage_size: Size,
                  stage_colors: Tuple[Color, Color],
                  margin_colors: Tuple[Color, Color],
+                 pilar_size: Size,
+                 pilar_speed: int,
+                 pilar_min_distance: int,
+                 pilar_max_distance: int,
                  clock_font: Font,
                  clock_font_color: Color,
                  text_box_font: Font):
@@ -31,6 +35,14 @@ class Stage:
         self.__window_height = window_size.height
         self.__margin_width = (self.__window_width - self.__width) / 2
         self.__margin_height = (self.__window_height - self.__height) / 2
+
+        self.__pilar_width = pilar_size.width
+        self.__pilar_hole = pilar_size.height
+        self.__pilar_speed = pilar_speed
+        self.__pilar_min_distance = pilar_min_distance
+        self.__pilar_max_distance = pilar_max_distance
+        self.__pilar_left_limit = ( self.__width / 4 ) + self.__margin_width
+        self.__pilars = list()
 
         self.__margins, self.__stage = self.__initialize_stage()
         self.__text_boxes = self.__initialize_text_boxes(text_box_font)
@@ -60,6 +72,9 @@ class Stage:
         stage = Rectangle(stage_rect, self.__stage_color,
                           self.__pilar_color)
         return margins, stage
+
+    def __initialize_pilars(self) -> List[Tuple[Rectangle, Rectangle]]:
+        self.__pilars.append(self.__create_pilar())
 
     # Initializes the text boxes. This part is partly hard_coded.
     def __initialize_text_boxes(self, font: Font) -> List[TextBox.TextBox]:
@@ -91,7 +106,7 @@ class Stage:
 
     # Returns the walls.
     def get_margins(self) -> List[Rectangle]:
-        return self.__marginss
+        return self.__margins
 
     # Returns the stage.
     def get_stage(self) -> Rectangle:

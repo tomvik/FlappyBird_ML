@@ -15,6 +15,7 @@ class Stage:
                  window_title: str,
                  stage_size: Size,
                  stage_colors: Tuple[Color, Color],
+                 margin_colors: Tuple[Color, Color],
                  clock_font: Font,
                  clock_font_color: Color,
                  text_box_font: Font):
@@ -22,56 +23,58 @@ class Stage:
         self.__width = stage_size.width
         self.__height = stage_size.height
         self.__stage_color = stage_colors[0]
-        self.__walls_color = stage_colors[1]
+        self.__pilar_color = stage_colors[1]
+        self.__margin_color = margin_colors[0]
+        self.__margin_text_color = margin_colors[1]
 
-        self.__window_width = Constants.WINDOW_WIDTH
-        self.__window_height = Constants.WINDOW_HEIGHT
-        self.__wall_width = (self.__window_width - self.__width) / 2
-        self.__wall_height = (self.__window_height - self.__height) / 2
+        self.__window_width = window_size.width
+        self.__window_height = window_size.height
+        self.__margin_width = (self.__window_width - self.__width) / 2
+        self.__margin_height = (self.__window_height - self.__height) / 2
 
-        self.__walls, self.__stage = self.__initialize_stage()
+        self.__margins, self.__stage = self.__initialize_stage()
         self.__text_boxes = self.__initialize_text_boxes(text_box_font)
 
-        clock_pos = Point(self.__width + self.__wall_width + 1,
-                          self.__height + self.__wall_height)
-        self.__clock = Clock(clock_pos, self.__stage_color, self.__walls_color,
+        clock_pos = Point(self.__width + self.__margin_width + 1,
+                          self.__height + self.__margin_height)
+        self.__clock = Clock(clock_pos, self.__margin_color, self.__margin_text_color,
                              clock_font, clock_font_color)
 
-    # Initializes the stage and returns its walls and stage.
+    # Initializes the stage and returns its margins and stage.
     def __initialize_stage(self) -> Tuple[List[Rectangle], Rectangle]:
-        wall_rects = [PointSize(0, 0,
-                                self.__wall_width, self.__window_height),
+        margin_rects = [PointSize(0, 0,
+                                self.__margin_width, self.__window_height),
                       PointSize(0, 0,
-                                self.__window_width, self.__wall_height),
-                      PointSize(self.__wall_width+self.__width, 0,
-                                self.__wall_width, self.__window_height),
-                      PointSize(0, self.__wall_height+self.__height,
-                                self.__window_width, self.__wall_height)]
-        stage_rect = PointSize(self.__wall_width, self.__wall_height,
+                                self.__window_width, self.__margin_height),
+                      PointSize(self.__margin_width+self.__width, 0,
+                                self.__margin_width, self.__window_height),
+                      PointSize(0, self.__margin_height+self.__height,
+                                self.__window_width, self.__margin_height)]
+        stage_rect = PointSize(self.__margin_width, self.__margin_height,
                                self.__width, self.__height)
 
-        walls = list()
-        for wall in wall_rects:
-            walls.append(Rectangle(wall, self.__walls_color,
-                                   self.__stage_color))
+        margins = list()
+        for margin in margin_rects:
+            margins.append(Rectangle(margin, self.__margin_color,
+                                   self.__margin_text_color))
         stage = Rectangle(stage_rect, self.__stage_color,
-                          self.__walls_color)
-        return walls, stage
+                          self.__pilar_color)
+        return margins, stage
 
     # Initializes the text boxes. This part is partly hard_coded.
     def __initialize_text_boxes(self, font: Font) -> List[TextBox.TextBox]:
         text_boxes = list()
 
-        colors = (self.__stage_color, self.__walls_color)
-        position = Point(self.__width+(self.__wall_width)+10,
-                         self.__wall_height)
+        colors = (self.__margin_text_color, self.__margin_color)
+        position = Point(self.__width+(self.__margin_width)+10,
+                         self.__margin_height)
         separations = (5, 10)
         per_row = 2
         is_input = Constants.TEXTBOX_MATRIX_IS_INPUT
         data = Constants.TEXTBOX_MATRIX
         text_boxes = TextBox.create_matrix(position, colors, separations,
                                            per_row, is_input, data, font)
-        position = Point(5, self.__wall_height)
+        position = Point(5, self.__margin_height)
         is_input = Constants.INSTRUCTIONS_INPUT
         data = Constants.INSTRUCTIONS_TEXTBOXES
         text_boxes += TextBox.create_matrix(position, colors, separations,
@@ -87,8 +90,8 @@ class Stage:
         return -1
 
     # Returns the walls.
-    def get_walls(self) -> List[Rectangle]:
-        return self.__walls
+    def get_margins(self) -> List[Rectangle]:
+        return self.__marginss
 
     # Returns the stage.
     def get_stage(self) -> Rectangle:
@@ -99,8 +102,8 @@ class Stage:
         return self.__stage_color
 
     # Returns the wall color.
-    def get_walls_color(self) -> Color:
-        return self.__walls_color
+    def get_margin_color(self) -> Color:
+        return self.__margin_color
 
     # Returns the Stage limits as in: x_min, y_min, x_max, y_max
     def get_stage_limits(self) -> Limits:
@@ -139,7 +142,7 @@ class Stage:
     def closest_wall_to(self,
                         a: Rectangle) -> Tuple[Rectangle, Direction, int]:
         selected_wall, distance = Distances.closest_of_all_Linf(a,
-                                                                self.__walls)
+                                                                self.__margins)
         direction = Distances.cardinal_system_direction(a, selected_wall)
         return selected_wall, direction, distance
 

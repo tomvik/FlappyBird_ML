@@ -15,12 +15,23 @@ CLEAR_GREY: Color = Color(211, 211, 211)
 DARK_GREY: Color = Color(140, 140, 140)
 BLACK: Color = Color(0, 0, 0)
 WHITE: Color = Color(255, 255, 255)
+STAGE_BACKGROUND: Color = Color(113, 145, 146)
+STAGE_PILARS: Color = Color(95, 103, 105)
+WINDOW_BACKGROUND: Color = Color(60, 66, 69)
+TEXT_COLOR: Color = Color(223, 205, 195)
+
+BIRDS_COLOR: List[Color] = [Color(204, 0, 0), Color(204, 102, 0),
+                            Color(204, 204, 0), Color(102, 204, 0),
+                            Color(0, 204, 0), Color(0, 204, 102),
+                            Color(0, 204, 204), Color(0, 102, 204),
+                            Color(0, 0, 204), Color(102, 0, 204)]
 
 # Stage constants
 STAGE_SIZE: Size = Size(800, 500)
 WALLS_DIMENSIONS: Size = Size(((WINDOW_WIDTH-STAGE_SIZE.width)/2),
                               ((WINDOW_HEIGHT-STAGE_SIZE.height)/2))
-STAGE_COLORS: Tuple[Color, Color] = (CLEAR_GREY, DARK_GREY)
+STAGE_COLORS: Tuple[Color, Color] = (STAGE_BACKGROUND, STAGE_PILARS)
+MARGIN_COLORS: Tuple[Color, Color] = (WINDOW_BACKGROUND, TEXT_COLOR)
 STAGE_CENTER: Point = Point(WINDOW_WIDTH/2, WINDOW_HEIGHT/2)
 
 CLOCK_FONT: Font = Font("Trebuchet MS", 25)

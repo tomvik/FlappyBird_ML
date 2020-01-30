@@ -7,7 +7,7 @@ from .Math import Distances
 from .SimpleFigures.Rectangle import Rectangle
 from .SimpleFigures.Clock import Clock
 from .SimpleFigures import TextBox
-from .SimpleFigures import Pilar
+from .PilarManager import PilarManager
 
 
 class Stage:
@@ -37,14 +37,6 @@ class Stage:
         self.__margin_width = (self.__window_width - self.__width) / 2
         self.__margin_height = (self.__window_height - self.__height) / 2
 
-        self.__pilar_width = pilar_size.width
-        self.__pilar_hole = pilar_size.height
-        self.__pilar_speed = pilar_speed
-        self.__pilar_min_distance = pilar_min_distance
-        self.__pilar_max_distance = pilar_max_distance
-        self.__pilar_left_limit = ( self.__width / 4 ) + self.__margin_width
-        self.__pilars = list()
-
         self.__margins, self.__stage = self.__initialize_stage()
         self.__text_boxes = self.__initialize_text_boxes(text_box_font)
 
@@ -52,9 +44,16 @@ class Stage:
                           self.__height + self.__margin_height)
         self.__clock = Clock(clock_pos, self.__margin_color, self.__margin_text_color,
                              clock_font, clock_font_color)
-        self._pilar = Pilar.Pilar(pilar_size.width, pilar_size.height, 
-                                  self.__margin_height, self.__window_height-self.__margin_height, 
-                                  self.__pilar_left_limit, self.__pilar_color, self.__stage_color, self.__pilar_left_limit)
+        
+        pilar_left_limit = ( self.__width / 4 ) + self.__margin_width
+        self.__pilar_manager = PilarManager(pilar_size.width, pilar_size.height,
+                                            pilar_min_distance, pilar_max_distance,
+                                            pilar_speed,
+                                            Limits(pilar_left_limit,
+                                                   self.__margin_height,
+                                                   (self.__window_width-self.__margin_width),
+                                                   (self.__window_height-self.__margin_height)),
+                                            self.__pilar_color, self.__stage_color)
 
     # Initializes the stage and returns its margins and stage.
     def __initialize_stage(self) -> Tuple[List[Rectangle], Rectangle]:
@@ -144,7 +143,7 @@ class Stage:
     # Returns True if it's under its Time To Live, otherwise False.
     def update_clock(self):
         self.__clock.update_clock()
-        self._pilar.updatePilar(self.__pilar_speed)
+        self.__pilar_manager.update_pilars()
         self.__clock.draw()
         return self.__clock.still_valid()
 

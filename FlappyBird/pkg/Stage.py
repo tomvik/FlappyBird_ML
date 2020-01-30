@@ -7,6 +7,7 @@ from .Math import Distances
 from .SimpleFigures.Rectangle import Rectangle
 from .SimpleFigures.Clock import Clock
 from .SimpleFigures import TextBox
+from .SimpleFigures import Pilar
 
 
 class Stage:
@@ -51,6 +52,9 @@ class Stage:
                           self.__height + self.__margin_height)
         self.__clock = Clock(clock_pos, self.__margin_color, self.__margin_text_color,
                              clock_font, clock_font_color)
+        self._pilar = Pilar.Pilar(pilar_size.width, pilar_size.height, 
+                                  self.__margin_height, self.__window_height-self.__margin_height, 
+                                  self.__pilar_left_limit, self.__pilar_color, self.__stage_color, self.__pilar_left_limit)
 
     # Initializes the stage and returns its margins and stage.
     def __initialize_stage(self) -> Tuple[List[Rectangle], Rectangle]:

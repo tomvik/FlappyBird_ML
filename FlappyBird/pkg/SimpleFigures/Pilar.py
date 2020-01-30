@@ -36,5 +36,7 @@ class Pilar:
 
     def updatePilar(self, pixels: int):
         for pilar in self._pilar:
+            pilar.draw_background()
             pilar.move(Direction(-pixels, 0))
+            pilar.draw()
         pass

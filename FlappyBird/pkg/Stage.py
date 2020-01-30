@@ -144,6 +144,7 @@ class Stage:
     # Returns True if it's under its Time To Live, otherwise False.
     def update_clock(self):
         self.__clock.update_clock()
+        self._pilar.updatePilar(self.__pilar_speed)
         self.__clock.draw()
         return self.__clock.still_valid()
 

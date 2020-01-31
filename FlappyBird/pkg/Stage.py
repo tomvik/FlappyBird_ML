@@ -8,6 +8,7 @@ from .SimpleFigures.Rectangle import Rectangle
 from .SimpleFigures.Clock import Clock
 from .SimpleFigures import TextBox
 from .PilarManager import PilarManager
+from .BirdManager import BirdManager
 
 
 class Stage:
@@ -54,6 +55,13 @@ class Stage:
                                                    (self.__window_width-self.__margin_width),
                                                    (self.__window_height-self.__margin_height)),
                                             self.__pilar_color, self.__stage_color)
+        birds_limits = Limits(pilar_left_limit-1, self.__margin_height,
+                              pilar_left_limit+6, self.__window_height - self.__margin_height)
+        
+        birds_initial_point_size = PointSize(pilar_left_limit, self.__window_height/2, 5, 5)
+
+        self.__bird_manager = BirdManager(birds_initial_point_size, [Color(204, 0, 0)],
+                                          self.__stage_color, birds_limits)
 
     # Initializes the stage and returns its margins and stage.
     def __initialize_stage(self) -> Tuple[List[Rectangle], Rectangle]:
@@ -146,6 +154,9 @@ class Stage:
         self.__pilar_manager.update_pilars()
         self.__clock.draw()
         return self.__clock.still_valid()
+
+    def update_birds(self, keys: List[bool]):
+        self.__bird_manager.update_birds(keys)
 
     # Return the value of each text_box on a list.
     def get_text_values(self) -> Dict[str, int]:

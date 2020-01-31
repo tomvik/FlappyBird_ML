@@ -33,6 +33,11 @@ pygame.display.update()
 wait_for_enter()
 while stage.update_clock():
     pygame.display.update()
+    keys = [False]
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+            keys = [True]
+    stage.update_birds(keys)
     pass
 #wait_for_enter()
 

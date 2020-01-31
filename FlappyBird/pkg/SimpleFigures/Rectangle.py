@@ -153,6 +153,13 @@ class Rectangle:
     def collides(self, b: 'Rectangle') -> bool:
         return self._rectangle.colliderect(b.get_rectangle())
 
+    # Returns true if any part is outside of the area from the top.
+    def outside_area_from_top(self, area: Limits) -> bool:
+        return (self.get_limits().y_min <= area.y_min)
+
+    # Returns true if any part is outside of the area from the bottom.
+    def outside_area_from_bottom(self, area: Limits) -> bool:
+        return (self.get_limits().y_max >= area.y_max)
 
 # Returns a random position that does not collide with any other blocking.
 # And may be next to the walls.

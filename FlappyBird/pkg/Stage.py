@@ -7,8 +7,6 @@ from .Math import Distances
 from .SimpleFigures.Rectangle import Rectangle
 from .SimpleFigures.Clock import Clock
 from .SimpleFigures import TextBox
-from .PilarManager import PilarManager
-from .BirdManager import BirdManager
 
 
 class Stage:
@@ -18,10 +16,6 @@ class Stage:
                  stage_size: Size,
                  stage_colors: Tuple[Color, Color],
                  margin_colors: Tuple[Color, Color],
-                 pilar_size: Size,
-                 pilar_speed: int,
-                 pilar_min_distance: int,
-                 pilar_max_distance: int,
                  clock_font: Font,
                  clock_font_color: Color,
                  text_box_font: Font):
@@ -45,23 +39,6 @@ class Stage:
                           self.__height + self.__margin_height)
         self.__clock = Clock(clock_pos, self.__margin_color, self.__margin_text_color,
                              clock_font, clock_font_color)
-        
-        pilar_left_limit = ( self.__width / 4 ) + self.__margin_width
-        self.__pilar_manager = PilarManager(pilar_size.width, pilar_size.height,
-                                            pilar_min_distance, pilar_max_distance,
-                                            pilar_speed,
-                                            Limits(pilar_left_limit,
-                                                   self.__margin_height,
-                                                   (self.__window_width-self.__margin_width),
-                                                   (self.__window_height-self.__margin_height)),
-                                            self.__pilar_color, self.__stage_color)
-        birds_limits = Limits(pilar_left_limit-1, self.__margin_height,
-                              pilar_left_limit+6, self.__window_height - self.__margin_height)
-        
-        birds_initial_point_size = PointSize(pilar_left_limit, self.__window_height/2, 5, 5)
-
-        self.__bird_manager = BirdManager(birds_initial_point_size, [Color(204, 0, 0)],
-                                          self.__stage_color, birds_limits)
 
     # Initializes the stage and returns its margins and stage.
     def __initialize_stage(self) -> Tuple[List[Rectangle], Rectangle]:
@@ -83,9 +60,6 @@ class Stage:
         stage = Rectangle(stage_rect, self.__stage_color,
                           self.__pilar_color)
         return margins, stage
-
-    def __initialize_pilars(self) -> List[Tuple[Rectangle, Rectangle]]:
-        self.__pilars.append(self.__create_pilar())
 
     # Initializes the text boxes. This part is partly hard_coded.
     def __initialize_text_boxes(self, font: Font) -> List[TextBox.TextBox]:
@@ -131,6 +105,25 @@ class Stage:
     def get_margin_color(self) -> Color:
         return self.__margin_color
 
+    # Returns the pilar color.
+    def get_pilar_color(self) -> Color:
+        return self.__pilar_color
+
+    # Returns the limits where the Pilars can be.
+    def get_pilar_limits(self) -> Limits:
+        return Limits((self.__width / 4 ) + self.__margin_width,
+                      self.__margin_height,
+                      (self.__window_width-self.__margin_width),
+                      (self.__window_height-self.__margin_height))
+
+    # Returns the limits where the Birds can be.
+    def get_birds_limits(self) -> Limits:
+        pilar_left_limit = ( self.__width / 4 ) + self.__margin_width
+        return Limits(pilar_left_limit-1,
+                      self.__margin_height,
+                      pilar_left_limit+6,
+                      self.__window_height - self.__margin_height)
+
     # Returns the Stage limits as in: x_min, y_min, x_max, y_max
     def get_stage_limits(self) -> Limits:
         return self.__stage.get_limits()
@@ -151,12 +144,8 @@ class Stage:
     # Returns True if it's under its Time To Live, otherwise False.
     def update_clock(self):
         self.__clock.update_clock()
-        self.__pilar_manager.update_pilars()
         self.__clock.draw()
         return self.__clock.still_valid()
-
-    def update_birds(self, keys: List[bool]):
-        self.__bird_manager.update_birds(keys)
 
     # Return the value of each text_box on a list.
     def get_text_values(self) -> Dict[str, int]:

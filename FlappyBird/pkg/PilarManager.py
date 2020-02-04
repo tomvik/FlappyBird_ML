@@ -49,6 +49,10 @@ class PilarManager:
         while (self.__last_left_position + self.__pilar_width < self.__stage_limits.x_max):
             self.__pilars.append(self.__initialize_pilar(self.__last_left_position))
             self.__last_left_position += separation + self.__pilar_width
+
+    # Returns the left limit for the pilars
+    def get_pilar_left_limit(self):
+        return self.__stage_limits.x_min
     
     # Updates the pilar positions, deleting them if they've crossed the left limit and adding
     # new ones if there's space.

@@ -20,6 +20,8 @@ STAGE_PILARS: Color = Color(95, 103, 105)
 WINDOW_BACKGROUND: Color = Color(60, 66, 69)
 TEXT_COLOR: Color = Color(223, 205, 195)
 
+# Birds constants
+BIRD_SIZE: int = 5
 BIRDS_COLOR: List[Color] = [Color(204, 0, 0), Color(204, 102, 0),
                             Color(204, 204, 0), Color(102, 204, 0),
                             Color(0, 204, 0), Color(0, 204, 102),

@@ -9,7 +9,7 @@ class Clock:
     def __init__(self, pos: Point, box_color: Color,
                  background_color: Color, font: Font,
                  font_color: Color,
-                 fps: int = 10, ttl: int = 6000):
+                 fps: int = 25, ttl: int = 10000):
         self.__fps = fps
         self.__ttl = ttl
         self.__total_ms = 0

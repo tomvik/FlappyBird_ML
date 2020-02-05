@@ -48,6 +48,10 @@ class Pilar:
             pilar.draw()
         return True
 
-    # Returns the integer value of the left most position of the pilar
+    # Returns the integer value of the left most position of the pilar.
     def get_left_position(self):
         return self._pilar[0].get_limits().x_min
+
+    # Returns the rectangles of the pilars.
+    def get_pilars(self):
+        return self._pilar

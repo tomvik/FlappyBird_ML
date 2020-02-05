@@ -47,6 +47,7 @@ class Bird(Rectangle):
             self.teleport(Point(self.__limits.x_min, self.__limits.y_min))
         self.draw()
 
+    # Updates the bird depending if it flaps or falls.
     def update(self, flap: bool):
         if(flap):
             self.flap()

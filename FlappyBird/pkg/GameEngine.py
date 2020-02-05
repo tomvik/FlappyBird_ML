@@ -46,24 +46,34 @@ class GameEngine:
                                            self.__stage.get_birds_limits())
         pygame.display.update()
         self.wait_for_enter()
+
+    # Updates the pilars and birdsn and if there's any collision, it kills the bird.
+    def __update_pilars_and_birds(self, keys: List[bool]):
+        self.__pilar_manager.update_pilars()
+        self.__birds_manager.update_birds(keys)
+        self.__birds_manager.collision_check(self.__pilar_manager.get_leftmost_pilar())
     
+    # Returns true if the key pressed was enter.
+    def pressed_enter(self):
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN and and event.key == pygame.K_RETURN:
+                return True
+        return False
+
+    # Holds until an enter was pressed
     def wait_for_enter(self):
         waiting = True
         while waiting:
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN \
-                        and event.key == pygame.K_RETURN:
-                    waiting = False
+            if self.pressed_enter():
+                waiting = False
 
+    # Main loop that runs the game.
     def run(self):
-        while self.__stage.update_clock():
-            self.__pilar_manager.update_pilars()
+        while self.__stage.update_clock() and self.__birds_manager.is_any_bird_alive():
             keys = [False]
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
-                    keys = [True]
-            self.__birds_manager.update_birds(keys)
+            if self.pressed_enter():
+                keys = [True]
+            self.__update_pilars_and_birds(keys)
             pygame.display.update()
 
         pygame.display.update()
-        pass

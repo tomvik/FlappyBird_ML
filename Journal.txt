@@ -11,7 +11,6 @@ Best survivor:
     Distance traveled from the beginning
 
 TODO:
--If it collides with the pilar, dead
--Stop round when bird is dead, not by time
--Add the ML part
 -Add useful text boxes
+-Add restart option
+-Add the ML part

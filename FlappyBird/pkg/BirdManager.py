@@ -50,3 +50,7 @@ class BirdManager:
     # Returns true if there's any alive bird.
     def is_any_bird_alive(self):
         return self.__birds_alive > 0
+
+    # Returns the total number of birds.
+    def number_of_birds(self):
+        return len(self.__birds)

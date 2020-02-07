@@ -2,6 +2,7 @@ import pygame
 from typing import Dict, List, Tuple
 
 from .Common.Common_Types import *
+from .Common import Constants
 from .BirdManager import BirdManager
 from .PilarManager import PilarManager
 from .Stage import Stage
@@ -40,39 +41,72 @@ class GameEngine:
                                             self.__stage.get_pilar_color(),
                                             self.__stage.get_stage_color())
         bird_point_size = PointSize(self.__pilar_manager.get_pilar_left_limit(), window_size.height/2, bird_size, bird_size)
+        pygame.display.update()
+    
+        self.wait_for_enter()
+        stage_data = self.__load_stage_state()
+        self.__max_generation = stage_data[Constants.MAX_GENERATION]
         self.__birds_manager = BirdManager(bird_point_size,
-                                           [Color(204, 0, 0)],
+                                           Constants.BIRDS_COLOR[0:stage_data[Constants.INITIAL_BIRDS]],
                                            self.__stage.get_stage_color(),
                                            self.__stage.get_birds_limits())
         pygame.display.update()
-        self.wait_for_enter()
+
+    def __del__(self):
+        pygame.quit()
+
+    # Returns a list of the values of the text_boxes.
+    def __load_stage_state(self) -> Dict[str, int]:
+        return self.__stage.get_text_values()
 
     # Updates the pilars and birdsn and if there's any collision, it kills the bird.
     def __update_pilars_and_birds(self, keys: List[bool]):
         self.__pilar_manager.update_pilars()
         self.__birds_manager.update_birds(keys)
         self.__birds_manager.collision_check(self.__pilar_manager.get_leftmost_pilar())
-    
-    # Returns true if the key pressed was enter.
-    def pressed_enter(self):
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN and and event.key == pygame.K_RETURN:
-                return True
-        return False
 
     # Holds until an enter was pressed
     def wait_for_enter(self):
         waiting = True
         while waiting:
-            if self.pressed_enter():
-                waiting = False
+            for event in pygame.event.get():
+                if self.__is_enter(event):
+                    waiting = False
+    
+    # Returns true if the key pressed was enter.
+    def __is_enter(self, event: pygame.event):
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+                return True
+        return False
+
+    # Returns true if quit or escape have been pressed.
+    def __maybe_quit(self, event: pygame.event) -> bool:
+        if event.type == pygame.QUIT:
+            return True
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                return True
+        return False
+
+    # Handles the events during the game.
+    def __handle_in_game_events(self) -> int:
+        for event in pygame.event.get():
+            if self.__maybe_quit(event):
+                return 1
+            if self.__is_enter(event):
+                return 2
+        return 0
 
     # Main loop that runs the game.
     def run(self):
-        while self.__stage.update_clock() and self.__birds_manager.is_any_bird_alive():
-            keys = [False]
-            if self.pressed_enter():
-                keys = [True]
+        while self.__birds_manager.is_any_bird_alive():
+            self.__stage.update_clock()
+            keys = [False]*self.__birds_manager.number_of_birds()
+            case = self.__handle_in_game_events()
+            if case == 1:
+                break
+            elif case == 2:
+                keys[0] = True
             self.__update_pilars_and_birds(keys)
             pygame.display.update()
 

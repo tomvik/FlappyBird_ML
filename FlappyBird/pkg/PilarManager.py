@@ -71,3 +71,9 @@ class PilarManager:
             i += 1
         self.__last_left_position = self.__pilars[-1].get_left_position()
         self.__apend_pilars(self.__max_distance)
+
+    # Restarts the pilars
+    def restart_pilars(self):
+        self.__last_left_position = self.__stage_limits.x_min + self.__max_distance
+        del self.__pilars
+        self.__pilars = self.__initialize_pilars()

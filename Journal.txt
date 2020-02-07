@@ -11,6 +11,5 @@ Best survivor:
     Distance traveled from the beginning
 
 TODO:
--Add restart option
 -Add inputs of distance
 -Add the ML part

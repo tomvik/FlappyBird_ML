@@ -9,14 +9,16 @@ class BirdManager:
                  rectangle: PointSize,
                  bird_colors: List[Color],
                  background_color: Color,
-                 limits: Limits):
+                 limits: Limits,
+                 max_generation: int):
         self.__original_rectangle = rectangle
         self.__bird_colors = bird_colors
         self.__background_color = background_color
         self.__limits = limits
         self.__birds = self.__init_tuple_of_birds()
         self.__birds_alive = len(self.__birds)
-        print(len(self.__birds))
+        self.__generation = 0
+        self.__max_generation = max_generation
 
     # Initializes one bird with the selected color and returns it.
     def __init_one_bird(self, color: Color):
@@ -51,6 +53,17 @@ class BirdManager:
     def is_any_bird_alive(self):
         return self.__birds_alive > 0
 
+    # Returns true if the current generation is not yet the max generation
+    def is_there_another_generation(self):
+        return self.__generation < self.__max_generation
+
     # Returns the total number of birds.
     def number_of_birds(self):
         return len(self.__birds)
+
+    # Restars all the birds for a new round
+    def restart_birds(self):
+        self.__generation += 1
+        self.__birds_alive = len(self.__birds)
+        for i in range(len(self.__birds)):
+            self.__birds[i].revive()

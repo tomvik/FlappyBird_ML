@@ -49,7 +49,8 @@ class GameEngine:
         self.__birds_manager = BirdManager(bird_point_size,
                                            Constants.BIRDS_COLOR[0:stage_data[Constants.INITIAL_BIRDS]],
                                            self.__stage.get_stage_color(),
-                                           self.__stage.get_birds_limits())
+                                           self.__stage.get_birds_limits(),
+                                           stage_data[Constants.MAX_GENERATION])
         pygame.display.update()
 
     def __del__(self):
@@ -64,6 +65,12 @@ class GameEngine:
         self.__pilar_manager.update_pilars()
         self.__birds_manager.update_birds(keys)
         self.__birds_manager.collision_check(self.__pilar_manager.get_leftmost_pilar())
+
+    # Restarts the pilars and birds for a new round.
+    def __restart_game(self):
+        self.__pilar_manager.restart_pilars()
+        self.__birds_manager.restart_birds()
+        self.__stage.reset_clock()
 
     # Holds until an enter was pressed
     def wait_for_enter(self):
@@ -99,15 +106,20 @@ class GameEngine:
 
     # Main loop that runs the game.
     def run(self):
-        while self.__birds_manager.is_any_bird_alive():
-            self.__stage.update_clock()
-            keys = [False]*self.__birds_manager.number_of_birds()
-            case = self.__handle_in_game_events()
+        case = 0
+        while self.__birds_manager.is_there_another_generation():
+            while self.__birds_manager.is_any_bird_alive():
+                self.__stage.update_clock()
+                keys = [False]*self.__birds_manager.number_of_birds()
+                case = self.__handle_in_game_events()
+                if case == 1:
+                    break
+                elif case == 2:
+                    keys[0] = True
+                self.__update_pilars_and_birds(keys)
+                pygame.display.update()
             if case == 1:
                 break
-            elif case == 2:
-                keys[0] = True
-            self.__update_pilars_and_birds(keys)
-            pygame.display.update()
+            self.__restart_game()
 
         pygame.display.update()

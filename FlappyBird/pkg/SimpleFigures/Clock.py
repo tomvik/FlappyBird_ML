@@ -9,9 +9,8 @@ class Clock:
     def __init__(self, pos: Point, box_color: Color,
                  background_color: Color, font: Font,
                  font_color: Color,
-                 fps: int = 25, ttl: int = 10000):
+                 fps: int = 25):
         self.__fps = fps
-        self.__ttl = ttl
         self.__total_ms = 0
         self.__hour = 0
         self.__minute = 0
@@ -30,21 +29,9 @@ class Clock:
         self.__minute_box.set_transparent(False)
         self.__second_box.set_transparent(False)
 
-    # Returns true if the time is still under the TTL.
-    def still_valid(self) -> bool:
-        return self.__total_ms < self.__ttl
-
-    # Get TTL.
-    def get_ttl(self) -> int:
-        return self.__ttl
-
     # Get FPS.
     def get_fps(self) -> int:
         return self.__fps
-
-    # Sets the new TTL.
-    def set_ttl(self, ttl: int):
-        self.__ttl = ttl
 
     # Sets the new FPS.
     def set_fps(self, fps: int):

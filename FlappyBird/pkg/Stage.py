@@ -128,13 +128,6 @@ class Stage:
     def get_stage_limits(self) -> Limits:
         return self.__stage.get_limits()
 
-    # Gets the TTL in seconds.
-    def get_ttl_seconds(self) -> int:
-        return self.__clock.get_ttl()/1000
-
-    def get_fps(self) -> int:
-        return self.__clock.get_fps()
-
     # Draws all the text boxes.
     def draw_input_boxes(self):
         for box in self.__text_boxes:
@@ -145,7 +138,6 @@ class Stage:
     def update_clock(self):
         self.__clock.update_clock()
         self.__clock.draw()
-        return self.__clock.still_valid()
 
     # Return the value of each text_box on a list.
     def get_text_values(self) -> Dict[str, int]:
@@ -169,14 +161,6 @@ class Stage:
     def reset_clock(self):
         self.__clock.reset()
 
-    # Sets the new TTL.
-    def set_ttl_seconds(self, ttl: int):
-        self.__clock.set_ttl(ttl*1000)
-
-    # Sets the new FPS.
-    def set_fps(self, fps: int):
-        self.__clock.set_fps(fps)
-
     # Handle the events for each text box.
     def handle_event(self, event: pygame.event):
         for text_box in self.__text_boxes:
@@ -192,25 +176,3 @@ class Stage:
     # Handles the updates necessary for the new round.
     def new_round_stage(self, key_value: Dict[str, int]):
         self.reset_clock()
-        self.handle_in_game(key_value)
-
-    # Changes the boxes that won't be updated anymore to output only, and those
-    # that will be to input. The naming is weird, but input are the only ones
-    # that get updated.
-    def initialize_game(self):
-        for box in self.__text_boxes:
-            if box.has_name():
-                if box.get_name() != Constants.INITIAL_CHARACTERS \
-                        and box.get_name() != Constants.INITIAL_FOODS:
-                    box.change_type()
-
-    # Changes the boxes that won't be updated anymore to output only, and those
-    # that will be to input. The naming is weird, but input are the only ones
-    # that get updated.
-    def continue_game(self):
-        for box in self.__text_boxes:
-            if box.has_name():
-                if box.get_name() != Constants.TTL \
-                        and box.get_name() != Constants.FPS:
-                    box.change_type()
-        self.__clock.reset()

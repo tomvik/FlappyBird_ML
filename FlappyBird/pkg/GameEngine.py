@@ -7,6 +7,7 @@ from .BirdManager import BirdManager
 from .PilarManager import PilarManager
 from .Stage import Stage
 
+
 class GameEngine:
 
     def __init__(self,
@@ -40,9 +41,10 @@ class GameEngine:
                                             self.__stage.get_pilar_limits(),
                                             self.__stage.get_pilar_color(),
                                             self.__stage.get_stage_color())
-        bird_point_size = PointSize(self.__pilar_manager.get_pilar_left_limit(), window_size.height/2, bird_size, bird_size)
+        bird_point_size = PointSize(self.__pilar_manager.get_pilar_left_limit(
+        ), window_size.height/2, bird_size, bird_size)
         pygame.display.update()
-    
+
         self.wait_for_enter()
         stage_data = self.__load_stage_state()
         self.__max_generation = stage_data[Constants.MAX_GENERATION]
@@ -64,13 +66,15 @@ class GameEngine:
     def __update_pilars_and_birds(self, keys: List[bool]):
         self.__pilar_manager.update_pilars()
         self.__birds_manager.update_birds(keys)
-        self.__birds_manager.collision_check(self.__pilar_manager.get_leftmost_pilar())
+        self.__birds_manager.collision_check(
+            self.__pilar_manager.get_leftmost_pilar())
 
     # Restarts the pilars and birds for a new round.
     def __restart_game(self):
         self.__pilar_manager.restart_pilars()
         self.__birds_manager.restart_birds()
         self.__stage.reset_clock()
+        self.__stage.new_round_stage(self.__birds_manager.get_generation())
 
     # Holds until an enter was pressed
     def wait_for_enter(self):
@@ -79,11 +83,11 @@ class GameEngine:
             for event in pygame.event.get():
                 if self.__is_enter(event):
                     waiting = False
-    
+
     # Returns true if the key pressed was enter.
     def __is_enter(self, event: pygame.event):
         if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
-                return True
+            return True
         return False
 
     # Returns true if quit or escape have been pressed.

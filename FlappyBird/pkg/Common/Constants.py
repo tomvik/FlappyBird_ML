@@ -50,11 +50,11 @@ GENERATION: str = "Generation"
 
 TEXTBOX_MATRIX_IS_INPUT: List[bool] = [False, True,
                                        False, True,
-                                       False, False]
+                                       False, True]
 
 TEXTBOX_MATRIX: List[Tuple[str, str]] = \
-    [("", "Birds:"), (INITIAL_BIRDS, "2    "),
-     ("", "Max generations:"), (MAX_GENERATION, "2    "),
+    [("", "Birds:"), (INITIAL_BIRDS, "3    "),
+     ("", "Max generations:"), (MAX_GENERATION, "4    "),
      ("", "Generation:"), (GENERATION, "0    ")]
 
 INSTRUCTIONS_TEXTBOXES: List[Tuple[str, str]] = \

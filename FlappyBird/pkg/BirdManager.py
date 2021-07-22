@@ -3,6 +3,7 @@ from .Common.Common_Types import *
 from .SimpleFigures.Bird import Bird
 from .SimpleFigures.Pilar import Pilar
 
+
 class BirdManager:
 
     def __init__(self,
@@ -67,3 +68,7 @@ class BirdManager:
         self.__birds_alive = len(self.__birds)
         for i in range(len(self.__birds)):
             self.__birds[i].revive()
+
+    # Returns the current generation
+    def get_generation(self) -> int:
+        return self.__generation

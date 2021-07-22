@@ -2,7 +2,7 @@ from .Rectangle import Rectangle
 from ..Common.Common_Types import *
 
 class Bird(Rectangle):
-    DROP_RATE = 5
+    DROP_RATE = 2
     FLAP_RATE = -15
 
     def __init__(self,

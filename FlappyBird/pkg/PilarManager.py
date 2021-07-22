@@ -1,6 +1,7 @@
 from .Common.Common_Types import *
 from .SimpleFigures.Pilar import Pilar
 
+
 class PilarManager:
 
     def __init__(self,
@@ -34,7 +35,7 @@ class PilarManager:
                      self.__pilar_color,
                      self.__background_color,
                      left_pos)
-    
+
     # Initializes a set of pilars with the max separation between them.
     def __initialize_pilars(self):
         pilars = list()
@@ -44,10 +45,11 @@ class PilarManager:
         return pilars
 
     # Apends any new pilars that can be drawn in stage with the separation sent as a parameter.
-    def __apend_pilars(self, separation):
+    def __append_pilars(self, separation):
         self.__last_left_position += separation + self.__pilar_width
         while (self.__last_left_position + self.__pilar_width < self.__stage_limits.x_max):
-            self.__pilars.append(self.__initialize_pilar(self.__last_left_position))
+            self.__pilars.append(
+                self.__initialize_pilar(self.__last_left_position))
             self.__last_left_position += separation + self.__pilar_width
 
     # Returns the left limit for the pilars.
@@ -57,7 +59,7 @@ class PilarManager:
     # Returns the leftmost pilar.
     def get_leftmost_pilar(self):
         return self.__pilars[0]
-    
+
     # Updates the pilar positions, deleting them if they've crossed the left limit and adding
     # new ones if there's space.
     def update_pilars(self):
@@ -70,7 +72,7 @@ class PilarManager:
                 i -= 1
             i += 1
         self.__last_left_position = self.__pilars[-1].get_left_position()
-        self.__apend_pilars(self.__max_distance)
+        self.__append_pilars(self.__max_distance)
 
     # Restarts the pilars
     def restart_pilars(self):

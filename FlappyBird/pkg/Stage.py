@@ -43,20 +43,20 @@ class Stage:
     # Initializes the stage and returns its margins and stage.
     def __initialize_stage(self) -> Tuple[List[Rectangle], Rectangle]:
         margin_rects = [PointSize(0, 0,
-                                self.__margin_width, self.__window_height),
-                      PointSize(0, 0,
-                                self.__window_width, self.__margin_height),
-                      PointSize(self.__margin_width+self.__width, 0,
-                                self.__margin_width, self.__window_height),
-                      PointSize(0, self.__margin_height+self.__height,
-                                self.__window_width, self.__margin_height)]
+                                  self.__margin_width, self.__window_height),
+                        PointSize(0, 0,
+                                  self.__window_width, self.__margin_height),
+                        PointSize(self.__margin_width+self.__width, 0,
+                                  self.__margin_width, self.__window_height),
+                        PointSize(0, self.__margin_height+self.__height,
+                                  self.__window_width, self.__margin_height)]
         stage_rect = PointSize(self.__margin_width, self.__margin_height,
                                self.__width, self.__height)
 
         margins = list()
         for margin in margin_rects:
             margins.append(Rectangle(margin, self.__margin_color,
-                                   self.__margin_text_color))
+                                     self.__margin_text_color))
         stage = Rectangle(stage_rect, self.__stage_color,
                           self.__pilar_color)
         return margins, stage
@@ -111,14 +111,14 @@ class Stage:
 
     # Returns the limits where the Pilars can be.
     def get_pilar_limits(self) -> Limits:
-        return Limits((self.__width / 4 ) + self.__margin_width,
+        return Limits((self.__width / 4) + self.__margin_width,
                       self.__margin_height,
                       (self.__window_width-self.__margin_width),
                       (self.__window_height-self.__margin_height))
 
     # Returns the limits where the Birds can be.
     def get_birds_limits(self) -> Limits:
-        pilar_left_limit = ( self.__width / 4 ) + self.__margin_width
+        pilar_left_limit = (self.__width / 4) + self.__margin_width
         return Limits(pilar_left_limit-1,
                       self.__margin_height,
                       pilar_left_limit+6,
@@ -174,5 +174,6 @@ class Stage:
         return self.update_clock()
 
     # Handles the updates necessary for the new round.
-    def new_round_stage(self, key_value: Dict[str, int]):
+    def new_round_stage(self, generation: int):
+        self.handle_in_game({Constants.GENERATION: generation})
         self.reset_clock()

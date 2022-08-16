@@ -41,14 +41,18 @@ class BirdManager:
             if self.__birds[i].is_alive():
                 self.__birds[i].update(keys[i])
 
-    # Check if any bird who is alive collided with the pilar. If yes, kill it.
-    def collision_check(self, pilar: Pilar):
+    # Check if any bird who is alive collided with the pilar. If yes, kill it. Otherwise, updates the distances
+    def collision_check(self, pilar: Pilar) -> None:
         up, down = pilar.get_pilars()
         for i in range(len(self.__birds)):
             if self.__birds[i].is_alive():
                 if self.__birds[i].collides(up) or self.__birds[i].collides(down):
                     self.__birds_alive -= 1
                     self.__birds[i].died()
+                else:
+                    distance_to_pilar = pilar.get_left_position() - self.__birds[i].get_right_position()
+                    distance_to_hole = self.__birds[i].get_y_midpoint() - pilar.get_hole_midpoint()
+                    self.__birds[i].update_distances(distance_to_pilar, distance_to_hole)
 
     # Returns true if there's any alive bird.
     def is_any_bird_alive(self):

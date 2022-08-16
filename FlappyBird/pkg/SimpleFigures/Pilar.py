@@ -1,4 +1,5 @@
 import random
+from typing import Tuple
 from .Rectangle import Rectangle
 from ..Common.Common_Types import *
 
@@ -20,10 +21,10 @@ class Pilar:
         self._stage_left_limit = stage_left_limit
         self._color = color
         self._background_color = background_color
-        self._pilar = self.__initialize_pilar(left_position)
+        self._pilar: Tuple[Rectangle, Rectangle] = self.__initialize_pilar(left_position)
 
     # Creates a new set of pilar on the left position, with a random hole position.
-    def __initialize_pilar(self, left_position: int):
+    def __initialize_pilar(self, left_position: int) -> Tuple[Rectangle, Rectangle]:
         hole_initial_pos = random.randint(self._stage_top_limit,
                                           self._stage_bottom_limit - self._pilar_hole_height)
         top_pilar_height = hole_initial_pos - self._stage_top_limit
@@ -37,7 +38,7 @@ class Pilar:
 
     # Updates the pilar for x amount of pixels, and if it has surpassed the left limit, 
     # it draws the background and returns False. Otherwise True.
-    def update_pilar(self, pixels: int):
+    def update_pilar(self, pixels: int) -> bool:
         if self._pilar[0].get_limits().x_min <= self._stage_left_limit:
             self._pilar[0].draw_background()
             self._pilar[1].draw_background()
@@ -49,9 +50,13 @@ class Pilar:
         return True
 
     # Returns the integer value of the left most position of the pilar.
-    def get_left_position(self):
+    def get_left_position(self) -> int:
         return self._pilar[0].get_limits().x_min
 
+    # Returns the integer value of the midpoint of the pilar hole.
+    def get_hole_midpoint(self) -> int:
+        return self._pilar[0].get_limits().y_max + (self._pilar_hole_height // 2)
+
     # Returns the rectangles of the pilars.
-    def get_pilars(self):
+    def get_pilars(self) -> Tuple[Rectangle, Rectangle]:
         return self._pilar

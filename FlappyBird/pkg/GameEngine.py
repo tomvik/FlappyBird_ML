@@ -63,11 +63,13 @@ class GameEngine:
         return self.__stage.get_text_values()
 
     # Updates the pilars and birdsn and if there's any collision, it kills the bird.
-    def __update_pilars_and_birds(self, keys: List[int]):
+    def __update_pilars_and_birds(self, keys: List[int]): #-> Tuple[List[Tuple[int, int], List[int]]]:
         self.__pilar_manager.update_pilars()
         self.__birds_manager.update_birds(keys)
         self.__birds_manager.collision_check(
             self.__pilar_manager.get_leftmost_pilar())
+
+        return self.__birds_manager.get_distances(), self.__birds_manager.get_times()
 
     # Restarts the pilars and birds for a new round.
     def __restart_game(self):
@@ -120,7 +122,8 @@ class GameEngine:
                     break
                 elif case == 2:
                     keys[0] = 1
-                self.__update_pilars_and_birds(keys)
+                distances, times = self.__update_pilars_and_birds(keys)
+                print(distances, times)
                 pygame.display.update()
             if case == 1:
                 break

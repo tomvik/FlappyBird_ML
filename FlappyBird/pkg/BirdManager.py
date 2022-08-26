@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 from .Common.Common_Types import *
 from .SimpleFigures.Bird import Bird
 from .SimpleFigures.Pilar import Pilar
@@ -53,6 +53,18 @@ class BirdManager:
                     distance_to_pilar = pilar.get_left_position() - self.__birds[i].get_right_position()
                     distance_to_hole = self.__birds[i].get_y_midpoint() - pilar.get_hole_midpoint()
                     self.__birds[i].update_distances(distance_to_pilar, distance_to_hole)
+
+    def get_distances(self) -> List[Tuple[int, int]]:
+        distances = list()
+        for i in range(len(self.__birds)):
+            distances.append(self.__birds[i].get_distances())
+        return distances
+
+    def get_times(self) -> List[int]:
+        times = list()
+        for i in range(len(self.__birds)):
+            times.append(self.__birds[i].get_time_alive())
+        return times
 
     # Returns true if there's any alive bird.
     def is_any_bird_alive(self):

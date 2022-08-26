@@ -32,6 +32,9 @@ class Bird(Rectangle):
     # the alive variable to True
     def revive(self) -> None:
         self.__alive = True
+        self.__distance_to_pilar = 0
+        self.__distance_to_pilar = 0
+        self.__frames_alive = 0
         self.teleport(self.__original_position)
         self.draw()
 

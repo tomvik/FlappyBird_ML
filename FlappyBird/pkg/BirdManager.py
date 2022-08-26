@@ -36,7 +36,7 @@ class BirdManager:
         return tuple(birds)
 
     # Updates all the living birds, regarding if they flap or fall.
-    def update_birds(self, keys: List[bool]):
+    def update_birds(self, keys: List[int]):
         for i in range(len(self.__birds)):
             if self.__birds[i].is_alive():
                 self.__birds[i].update(keys[i])

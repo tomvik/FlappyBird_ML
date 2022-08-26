@@ -52,8 +52,8 @@ class Bird(Rectangle):
         self.draw()
 
     # Updates the bird depending if it flaps or falls.
-    def update(self, flap: bool) -> None:
-        if(flap):
+    def update(self, flap: int) -> None:
+        if(flap == 1):
             self.flap()
         else:
             self.fall()

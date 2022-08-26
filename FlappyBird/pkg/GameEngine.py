@@ -63,7 +63,7 @@ class GameEngine:
         return self.__stage.get_text_values()
 
     # Updates the pilars and birdsn and if there's any collision, it kills the bird.
-    def __update_pilars_and_birds(self, keys: List[bool]):
+    def __update_pilars_and_birds(self, keys: List[int]):
         self.__pilar_manager.update_pilars()
         self.__birds_manager.update_birds(keys)
         self.__birds_manager.collision_check(
@@ -114,12 +114,12 @@ class GameEngine:
         while self.__birds_manager.is_there_another_generation():
             while self.__birds_manager.is_any_bird_alive():
                 self.__stage.update_clock()
-                keys = [False]*self.__birds_manager.number_of_birds()
+                keys = [0]*self.__birds_manager.number_of_birds()
                 case = self.__handle_in_game_events()
                 if case == 1:
                     break
                 elif case == 2:
-                    keys[0] = True
+                    keys[0] = 1
                 self.__update_pilars_and_birds(keys)
                 pygame.display.update()
             if case == 1:

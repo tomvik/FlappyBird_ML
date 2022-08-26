@@ -30,7 +30,7 @@ BIRDS_COLOR: List[Color] = [Color(204, 0, 0), Color(204, 102, 0),
 
 # Stage constants
 STAGE_SIZE: Size = Size(800, 500)
-PILAR_SIZE: Size = Size(20, 30)
+PILAR_SIZE: Size = Size(20, 40)
 PILAR_MAX_DISTANCE: int = 200
 PILAR_MIN_DISTANCE: int = 100
 PILAR_SPEED: int = 1
@@ -53,7 +53,7 @@ TEXTBOX_MATRIX_IS_INPUT: List[bool] = [False, True,
                                        False, True]
 
 TEXTBOX_MATRIX: List[Tuple[str, str]] = \
-    [("", "Birds:"), (INITIAL_BIRDS, "3    "),
+    [("", "Birds:"), (INITIAL_BIRDS, "1    "),
      ("", "Max generations:"), (MAX_GENERATION, "4    "),
      ("", "Generation:"), (GENERATION, "0    ")]
 

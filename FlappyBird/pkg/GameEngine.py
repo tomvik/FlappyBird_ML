@@ -1,3 +1,8 @@
+import multiprocessing
+import neat
+import numpy as np
+import os
+import pickle
 import pygame
 from typing import Dict, List, Tuple
 
@@ -111,22 +116,128 @@ class GameEngine:
         return 0
 
     # Main loop that runs the game.
-    def run(self):
-        case = 0
-        while self.__birds_manager.is_there_another_generation():
-            while self.__birds_manager.is_any_bird_alive():
+    # def run(self):
+    #     case = 0
+    #     while self.__birds_manager.is_there_another_generation():
+    #         while self.__birds_manager.is_any_bird_alive():
+    #             self.__stage.update_clock()
+    #             keys = [0]*self.__birds_manager.number_of_birds()
+    #             case = self.__handle_in_game_events()
+    #             if case == 1:
+    #                 break
+    #             elif case == 2:
+    #                 keys[0] = 1
+    #             distances, times = self.__update_pilars_and_birds(keys)
+    #             print(distances, times)
+    #             pygame.display.update()
+    #         if case == 1:
+    #             break
+    #         self.__restart_game()
+
+    #     pygame.display.update()
+
+    def eval_genome(self, genome, config):
+        net = neat.nn.FeedForwardNetwork.create(genome, config)
+
+        fitnesses = []
+
+        # case = 0
+        runs_per_net = 2
+        for runs in range(runs_per_net):
+
+            fitness = 0
+            keys = [0]*self.__birds_manager.number_of_birds()
+            while self.__birds_manager.is_any_bird_alive() and fitness < 200000:
                 self.__stage.update_clock()
-                keys = [0]*self.__birds_manager.number_of_birds()
-                case = self.__handle_in_game_events()
-                if case == 1:
-                    break
-                elif case == 2:
-                    keys[0] = 1
                 distances, times = self.__update_pilars_and_birds(keys)
-                print(distances, times)
                 pygame.display.update()
-            if case == 1:
-                break
+
+                inputs = [-distances[0][1]]
+                keys[0] = np.argmax(net.activate(inputs)) # two outputs, 0 or 1
+
+                fitness += times[0] - abs(distances[0][1])
+                # fitness = -abs(distances[0][1])
+
+                print(inputs, fitness, keys)
+
+
+            fitnesses.append(fitness)
+
+
+            # if case == 1:
+            #     break
+
             self.__restart_game()
 
-        pygame.display.update()
+        # pygame.display.update()
+
+        print('FITNESSES', fitnesses)
+
+        return np.mean(fitnesses)
+
+    def eval_genomes(self, genomes, config):
+        for genome_id, genome in genomes:
+            genome.fitness = self.eval_genome(genome, config)
+
+    # def run(self):
+    #     local_dir = os.path.dirname(__file__)
+    #     config_path = os.path.join(local_dir, 'config')
+    #     config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
+    #                      neat.DefaultSpeciesSet, neat.DefaultStagnation,
+    #                      config_path)
+
+    #     pop = neat.Population(config)
+    #     stats = neat.StatisticsReporter()
+    #     pop.add_reporter(stats)
+    #     pop.add_reporter(neat.StdOutReporter(True))
+
+    #     pe = neat.ThreadedEvaluator(1, self.eval_genome)
+    #     print('HEY')
+    #     winner = pop.run(pe.evaluate)
+
+    #     print(winner)
+
+    #     # Save the winner.
+    #     with open('winner', 'wb') as f:
+    #         pickle.dump(winner, f)
+
+    def run(self):
+        with open('winner', 'rb') as f:
+            c = pickle.load(f)
+
+        print('Loaded genome:')
+        print(c)
+
+        # Load the config file, which is assumed to live in
+        # the same directory as this script.
+        local_dir = os.path.dirname(__file__)
+        config_path = os.path.join(local_dir, 'config')
+        config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
+                            neat.DefaultSpeciesSet, neat.DefaultStagnation,
+                            config_path)
+
+        
+
+        net = neat.nn.FeedForwardNetwork.create(c, config)
+
+
+        case = 0
+        fitness = 0
+        keys = [0]*self.__birds_manager.number_of_birds()
+        while self.__birds_manager.is_any_bird_alive():
+            self.__stage.update_clock()
+            case = self.__handle_in_game_events()
+            if case == 1:
+                break
+            elif case == 2:
+                keys[0] = 1
+            distances, times = self.__update_pilars_and_birds(keys)
+            pygame.display.update()
+
+            inputs = [-distances[0][1]]
+            keys[0] = np.argmax(net.activate(inputs)) # two outputs, 0 or 1
+
+            fitness = times[0] - abs(distances[0][1])
+
+            print(inputs, fitness, keys)
+

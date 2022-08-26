@@ -11,10 +11,5 @@ Best survivor:
     Distance traveled from the beginning
 
 TODO:
--Import useful libraries from previous project
--Design the stage
--Make the stage move
--Make bird
--Make bird fall
--Make bird flap
--Stop round when bird is dead
+-Add inputs of distance
+-Add the ML part

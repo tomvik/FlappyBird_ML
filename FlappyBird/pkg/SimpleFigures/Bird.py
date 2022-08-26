@@ -17,6 +17,7 @@ class Bird(Rectangle):
         self.__alive: bool = True
         self.__distance_to_pilar: int = 0
         self.__distance_to_pilar: int = 0
+        self.__frames_alive: int = 0
     
     # Returns true if the bird is still alive.
     def is_alive(self) -> bool:
@@ -56,6 +57,7 @@ class Bird(Rectangle):
             self.flap()
         else:
             self.fall()
+        self.__frames_alive += 1
 
     # Returns an integer stating the x_max limit.
     def get_right_position(self) -> int:
@@ -73,4 +75,8 @@ class Bird(Rectangle):
    # Gets the distances to the pilar and hole as a tuple.
     def get_distances(self) -> Tuple[int, int]:
         return self.__distance_to_pilar, self.__distance_to_hole
+
+    # Gets the amount of frames that it was alive.
+    def get_time_alive(self) -> int:
+        return self.__frames_alive
 
